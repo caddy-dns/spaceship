@@ -1,4 +1,4 @@
-package template
+package spaceship
 
 import (
 	"fmt"
@@ -27,7 +27,6 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 	}
 }
 
-// TODO: This is just an example. Useful to allow env variable placeholders; update accordingly.
 // Provision sets up the module. Implements caddy.Provisioner.
 func (p *Provider) Provision(ctx caddy.Context) error {
 	// Single replacer instance for all placeholder expansions
@@ -56,12 +55,11 @@ func (p *Provider) Provision(ctx caddy.Context) error {
 	return nil
 }
 
-// TODO: This is just an example. Update accordingly.
 // UnmarshalCaddyfile sets up the DNS provider from Caddyfile tokens. Syntax:
 //
-// providername [<api_token>] {
-//     api_token <api_token>
-// }
+//     providername [<api_token>] {
+//         api_token <api_token>
+//     }
 //
 // **THIS IS JUST AN EXAMPLE AND NEEDS TO BE CUSTOMIZED.**
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
@@ -108,23 +106,37 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 					return d.Err("api_url requires value")
 				}
 				p.Provider.BaseURL = d.Val()
-				if d.NextArg() { return d.ArgErr() }
+				if d.NextArg() {
+					return d.ArgErr()
+				}
 			case "api_pagesize":
-				if !d.NextArg() { return d.Err("api_pagesize requires value") }
+				if !d.NextArg() {
+					return d.Err("api_pagesize requires value")
+				}
 				ps, err := strconv.Atoi(d.Val())
-				if err != nil || ps <= 0 { return d.Err("api_pagesize must be a positive integer") }
+				if err != nil || ps <= 0 {
+					return d.Err("api_pagesize must be a positive integer")
+				}
 				p.Provider.PageSize = ps
-				if d.NextArg() { return d.ArgErr() }
+				if d.NextArg() {
+					return d.ArgErr()
+				}
 			case "api_timeout":
-				if !d.NextArg() { return d.Err("api_timeout requires value (seconds)") }
+				if !d.NextArg() {
+					return d.Err("api_timeout requires value (seconds)")
+				}
 				secs, err := strconv.Atoi(d.Val())
-				if err != nil || secs <= 0 { return d.Err("api_timeout must be a positive integer (seconds)") }
+				if err != nil || secs <= 0 {
+					return d.Err("api_timeout must be a positive integer (seconds)")
+				}
 				if p.Provider.HTTPClient == nil {
 					p.Provider.HTTPClient = &http.Client{Timeout: time.Duration(secs) * time.Second}
 				} else {
 					p.Provider.HTTPClient.Timeout = time.Duration(secs) * time.Second
 				}
-				if d.NextArg() { return d.ArgErr() }
+				if d.NextArg() {
+					return d.ArgErr()
+				}
 			default:
 				return d.Errf("unrecognized subdirective '%s'", d.Val())
 			}

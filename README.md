@@ -76,3 +76,6 @@ Environment variable fallbacks recognized by the underlying provider: `LIBDNS_SP
 This module requires Caddy v2.10.0 or newer (tested with v2.10.2). Older Caddy versions (≤ v2.4.x) use an earlier `libdns` API and will not compile with this provider.
 
 Use Caddy's placeholder `{env.VAR}` to reference environment variables in the Caddyfile.
+
+# License
+MIT License (See [LICENSE](./LICENSE) file)
