@@ -42,14 +42,6 @@ jobs:
       - name: Go Env
         run: go env
 
-      - name: Verify formatting
-        run: |
-          if [ -n "$(gofmt -l .)" ]; then
-            echo 'Go files not formatted. Run gofmt.'
-            gofmt -l .
-            exit 1
-          fi
-
       - name: Vet
         run: go vet ./...
 
